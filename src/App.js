@@ -1,24 +1,55 @@
-import logo from './logo.svg';
 import './App.css';
+import GameWrapper, { GameContext, ThemeContext } from './context/GameContext';
+import { useContext, useEffect, useState } from 'react';
+import ThemeWrapper from './context/GameContext';
+import createInitialState from './utils/createInitialState';
+import Container from './components/Container';
+import Buttons from './components/Buttons';
+import findRandomEmptyButton from './utils/findRandomEmptyButton';
 
 function App() {
+  // buton state
+  const [buttons, setButtons] = useState(createInitialState().buttons);
+  // buton kontrolu state
+  const [buttonState, setButtonState] = useState(
+    createInitialState().buttonState
+  );
+
+  console.log('buttons', buttons);
+
+  // game over
+  const [gameOver, setGameOver] = useState(false);
+  // son hamle
+  const [lastMove, setLastMove] = useState({ row: null, col: null });
+  // kimin sirasi?
+  const [turn, setTurn] = useState('player');
+
+  useEffect(() => {
+    if (turn === 'cpu') {
+      const { row, col, gameOver: go } = findRandomEmptyButton(buttons);
+      setGameOver(go);
+      setLastMove({ row, col });
+      setButtons({
+        ...buttons,
+        [row]: buttons[row].map((button, index) =>
+          col === index ? 'O' : button
+        ),
+      });
+      setTurn('player');
+    }
+  }, [turn]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Buttons
+        buttons={buttons}
+        setButtons={setButtons}
+        turn={turn}
+        setTurn={setTurn}
+        lastMove={lastMove}
+        setLastMove={setLastMove}
+      />
+    </Container>
   );
 }
 

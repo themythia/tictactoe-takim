@@ -1,4 +1,12 @@
+import { useContext } from 'react';
+import { GameContext } from '../context/GameContext';
+
 const Container = ({ children }) => {
-  return <div>{children}</div>;
+  const { buttons } = useContext(GameContext);
+  return (
+    <div className='container'>
+      <div className='innerContainer'>{children}</div>
+    </div>
+  );
 };
 export default Container;

@@ -5,9 +5,13 @@ export const GameContext = createContext();
 
 const GameWrapper = ({ children }) => {
   // buton state
-  const [buttons, setButtons] = useState({});
+  const [buttons, setButtons] = useState(createInitialState().buttons);
   // buton kontrolu state
-  const [buttonState, setButtonState] = useState({});
+  const [buttonState, setButtonState] = useState(
+    createInitialState().buttonState
+  );
+
+  // console.log('buttons', buttons);
 
   // game over
   const [gameOver, setGameOver] = useState(false);
@@ -16,16 +20,21 @@ const GameWrapper = ({ children }) => {
   // kimin sirasi?
   const [turn, setTurn] = useState('player');
 
-  // const value = {
-  //   buttons: [buttons, setButtons],
-  //   buttonState: [buttonState, setButtonState],
-  //   gameOver: [gameOver, setGameOver],
-  //   lastMove: [lastMove, setLastMove],
-  //   turn: [turn, setTurn],
-  // };
-
   return (
-    <GameContext.Provider value={{ buttons, setButtons }}>
+    <GameContext.Provider
+      value={{
+        buttons,
+        setButtons,
+        buttonState,
+        setButtonState,
+        gameOver,
+        setGameOver,
+        lastMove,
+        setLastMove,
+        turn,
+        setTurn,
+      }}
+    >
       {children}
     </GameContext.Provider>
   );
